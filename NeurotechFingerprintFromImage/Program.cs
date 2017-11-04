@@ -64,19 +64,22 @@ namespace NeurotechFingerprintFromImage
                     //finger.FileName = myFileName;
                 subject.Fingers.Add(finger);
                 subject.Id = "1";
-
+                biometricClient.SetDatabaseConnectionToOdbc("Dsn=mssql_dsn;UID=sa;PWD=ddm@TT", "subjects");
                 //conenction to database 
-                var connection = new NClusterBiometricConnection
-                {
-                    Host = "/Local",
-                    AdminPort = 27759
-                };
-                biometricClient.RemoteConnections.Add(connection);
+                //var connection = new NClusterBiometricConnection
+                //{
+                //    Host = "/Local",
+                //    AdminPort = 27759
+                //};
+                //biometricClient.RemoteConnections.Add(connection);
                 NBiometricStatus status;
-               
+
+
+                File.WriteAllBytes("E:\\Fingerprint sample\\General Template", subject.GetTemplateBuffer().ToArray());
+                string templateFile = "E:\\Fingerprint sample\\Sample Template";
+                Array template = File.ReadAllBytes("E:\\Fingerprint sample\\Sample Template");
+                finger.FileName = templateFile;
                 
-
-
 
                 //Set finger template size (recommended, for enroll to database, is large)
                 //FacesTemplateSize is not set, so the default empalte size value is used
@@ -96,9 +99,7 @@ namespace NeurotechFingerprintFromImage
                       
                     }
                     //args[1] contains file name to save template
-                    File.WriteAllBytes("E:\\Fingerprint sample\\General Template", subject.GetTemplateBuffer().ToArray());
-                    string templateFile = "E:\\Fingerprint sample\\General Template";
-                    finger.FileName = templateFile;
+                    
                     
                     //add into database
                     NBiometricTask enrollTask =
@@ -124,10 +125,10 @@ namespace NeurotechFingerprintFromImage
                     File.WriteAllBytes("E:\\Fingerprint sample\\ANSI Template", subject.GetTemplateBuffer(CbeffBiometricOrganizations.IncitsTCM1Biometrics,
                                         CbeffBdbFormatIdentifiers.IncitsTCM1BiometricsFingerMinutiaeU,
                                           FMRecord.VersionAnsiCurrent).ToArray());
+                    
+                  Console.WriteLine("template saved successfully");
 
-                   Console.WriteLine("template saved successfully");
-
-                   // biometricClient.SetDatabaseConnectionToOdbc("Dsn=mssql_dsn;UID=sa;PWD=ddm@TT", "subjects");
+                   
 
                     
 
