@@ -67,36 +67,37 @@ namespace NeurotechFingerprintFromImage
                 // biometricClient.RemoteConnections.Add(connection);
                 // ;
 
+               
 
-                File.WriteAllBytes("E:\\Fingerprint sample\\General Template 2", subject.GetTemplateBuffer().ToArray());
+                //image location to create template 
                 string imageFile = "E:\\Fingerprint sample\\Sample 2.jpg";
               //  Array template = File.ReadAllBytes("E:\\Fingerprint sample\\General Template");
                 finger.FileName = imageFile;
                 subject.Fingers.Add(finger);
-                subject.Id = "1136";
+                subject.Id = "1138"; //ID number in the database
 
 
 
                 //Set finger template size (recommended, for enroll to database, is large)
-                //FacesTemplateSize is not set, so the default empalte size value is used
-               // biometricClient.FingersTemplateSize = NTemplateSize.Large;
                 
-               // var status = NBiometricStatus.InternalError;
-               var  status = biometricClient.CreateTemplate(subject);
+               biometricClient.FingersTemplateSize = NTemplateSize.Large;
+                
+                NBiometricStatus status = NBiometricStatus.InternalError;
+
+                //creates template using the image
+                status = biometricClient.CreateTemplate(subject);
                 if (status == NBiometricStatus.Ok)
                 {
                     Console.WriteLine("Template extracted");
                     // save image to file
                     using (var image = subject.Fingers[0].Image)
                     {
-                       
+                       //save image file in this path 
                         image.Save("E:\\Fingerprint sample\\new.jpg");
                         Console.WriteLine("image saved successfully");
                       
                     }
-                    //args[1] contains file name to save template
-                    
-                    
+    
                     //add into database
                     NBiometricTask enrollTask =
                     biometricClient.CreateTask(NBiometricOperations.Enroll, subject);
@@ -111,12 +112,13 @@ namespace NeurotechFingerprintFromImage
                     Console.WriteLine(String.Format("Enrollment was successful."));
                     Console.ReadLine();
 
+                    //create general template  
+                    File.WriteAllBytes("E:\\Fingerprint sample\\General Template 2", subject.GetTemplateBuffer().ToArray());
 
-
-                    //BDifStandard.ISO
+                    //create BDifStandard.ISO template
                     File.WriteAllBytes("E:\\Fingerprint sample\\ISO Template", subject.GetTemplateBuffer(CbeffBiometricOrganizations.IsoIecJtc1SC37Biometrics,
                                      CbeffBdbFormatIdentifiers.IsoIecJtc1SC37BiometricsFingerMinutiaeRecordFormat,FMRecord.VersionIsoCurrent).ToArray());
-                    //BDifStandard.ANSI
+                    //create BDifStandard.ANSI template
                     File.WriteAllBytes("E:\\Fingerprint sample\\ANSI Template", subject.GetTemplateBuffer(CbeffBiometricOrganizations.IncitsTCM1Biometrics,
                                         CbeffBdbFormatIdentifiers.IncitsTCM1BiometricsFingerMinutiaeU,FMRecord.VersionAnsiCurrent).ToArray());
                     
