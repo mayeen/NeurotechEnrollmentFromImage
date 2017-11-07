@@ -33,44 +33,57 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Neurotec">
-      <HintPath>..\Bin\dot net\Neurotec.dll</HintPath>
+    <Reference Include="Neurotec, Version=10.0.0.0, Culture=neutral, PublicKeyToken=ea4ecf06177ea613, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.dll</HintPath>
     </Reference>
-    <Reference Include="Neurotec.Biometrics">
-      <HintPath>..\Bin\dot net\Neurotec.Biometrics.dll</HintPath>
+    <Reference Include="Neurotec.Biometrics, Version=10.0.0.0, Culture=neutral, PublicKeyToken=ea4ecf06177ea613, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.Biometrics.dll</HintPath>
     </Reference>
-    <Reference Include="Neurotec.Biometrics.Client">
-      <HintPath>..\Bin\dot net\Neurotec.Biometrics.Client.dll</HintPath>
+    <Reference Include="Neurotec.Biometrics.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=ea4ecf06177ea613, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.Biometrics.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Neurotec.Biometrics.Gui">
-      <HintPath>..\Bin\dot net\Neurotec.Biometrics.Gui.dll</HintPath>
+    <Reference Include="Neurotec.Biometrics.Gui, Version=10.0.0.0, Culture=neutral, PublicKeyToken=ea4ecf06177ea613, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.Biometrics.Gui.dll</HintPath>
     </Reference>
-    <Reference Include="Neurotec.Cluster">
-      <HintPath>..\Bin\dot net\Neurotec.Cluster.dll</HintPath>
+    <Reference Include="Neurotec.Cluster, Version=10.0.0.0, Culture=neutral, PublicKeyToken=ea4ecf06177ea613, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.Cluster.dll</HintPath>
     </Reference>
-    <Reference Include="Neurotec.Cluster.Admin.Rest">
-      <HintPath>..\Bin\dot net\Neurotec.Cluster.Admin.Rest.dll</HintPath>
+    <Reference Include="Neurotec.Cluster.Admin.Rest, Version=10.0.0.0, Culture=neutral, PublicKeyToken=ea4ecf06177ea613, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.Cluster.Admin.Rest.dll</HintPath>
     </Reference>
-    <Reference Include="Neurotec.Devices">
-      <HintPath>..\Bin\dot net\Neurotec.Devices.dll</HintPath>
+    <Reference Include="Neurotec.Devices, Version=10.0.0.0, Culture=neutral, PublicKeyToken=ea4ecf06177ea613, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.Devices.dll</HintPath>
     </Reference>
-    <Reference Include="Neurotec.Devices.Virtual">
-      <HintPath>..\Bin\dot net\Neurotec.Devices.Virtual.dll</HintPath>
+    <Reference Include="Neurotec.Devices.Virtual, Version=10.0.0.0, Culture=neutral, PublicKeyToken=ea4ecf06177ea613, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.Devices.Virtual.dll</HintPath>
     </Reference>
-    <Reference Include="Neurotec.FaceVerification">
-      <HintPath>..\Bin\dot net\Neurotec.FaceVerification.dll</HintPath>
+    <Reference Include="Neurotec.FaceVerification, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.FaceVerification.dll</HintPath>
     </Reference>
-    <Reference Include="Neurotec.Gui">
-      <HintPath>..\Bin\dot net\Neurotec.Gui.dll</HintPath>
+    <Reference Include="Neurotec.Gui, Version=10.0.0.0, Culture=neutral, PublicKeyToken=ea4ecf06177ea613, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.Gui.dll</HintPath>
     </Reference>
-    <Reference Include="Neurotec.Licensing">
-      <HintPath>..\Bin\dot net\Neurotec.Licensing.dll</HintPath>
+    <Reference Include="Neurotec.Licensing, Version=10.0.0.0, Culture=neutral, PublicKeyToken=ea4ecf06177ea613, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.Licensing.dll</HintPath>
     </Reference>
-    <Reference Include="Neurotec.Media">
-      <HintPath>..\Bin\dot net\Neurotec.Media.dll</HintPath>
+    <Reference Include="Neurotec.Media, Version=10.0.0.0, Culture=neutral, PublicKeyToken=ea4ecf06177ea613, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.Media.dll</HintPath>
     </Reference>
-    <Reference Include="Neurotec.Media.Processing">
-      <HintPath>..\Bin\dot net\Neurotec.Media.Processing.dll</HintPath>
+    <Reference Include="Neurotec.Media.Processing, Version=10.0.0.0, Culture=neutral, PublicKeyToken=ea4ecf06177ea613, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\FingerprintAuthentication\Bin\dot net\Neurotec.Media.Processing.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

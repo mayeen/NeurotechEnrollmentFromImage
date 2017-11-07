@@ -7,8 +7,6 @@ using Neurotec.Licensing;
 using Neurotec.Biometrics.Client;
 using Neurotec.Biometrics;
 using System.IO;
-using Neurotec.Gui;
-using Neurotec.Biometrics.Gui;
 using Neurotec.Biometrics.Standards;
 
 namespace NeurotechFingerprintFromImage
@@ -24,69 +22,67 @@ namespace NeurotechFingerprintFromImage
         {
             //Licenses obtain for components
 
-            string components =       "Biometrics.FaceExtraction,Biometrics.FingerExtraction,Devices.Cameras";
+            string components ="Biometrics.FaceExtraction,Biometrics.FingerExtraction,Devices.Cameras";
             try
             {
                 if (!NLicense.ObtainComponents("/local", 5000, components))
                 {
 
                     throw new ApplicationException(string.Format("Could not obtain licenses for components: { 0 }", components));
-                   // Console.WriteLine("obtained");
+                  
                 }
 
             }catch
             {
                 Console.WriteLine(components);
-                //Console.ReadLine();
+                
             }
             
-            //NBiometricClient biometricClient = new NBiometricClient();
+            
             using (var biometricClient = new NBiometricClient { UseDeviceManager = true })
             using (var deviceManager = biometricClient.DeviceManager)
             using (var subject = new NSubject())
-            using (var face = new NFace())
+            
 
             using (var finger = new NFinger())
             {
-             //   Console.WriteLine("{0}",args[0]);
-               // Console.ReadLine();
+               
 
-                string myFileName = "E:\\Fingerprint sample\\012_3_3.jpg";
-               // string sampleFile = "012_3_2.jpg";
+               string myFileName = "E:\\Fingerprint sample\\012_3_3.jpg";
+              
                bool a=  Directory.Exists(myFileName);
 
-              bool b=  fileAccessible(myFileName);
+               bool b=  fileAccessible(myFileName);
 
-
-
-                    //args[0] is file name or full path to a file where fingerprint image is saved
-
-                    //finger.FileName = myFileName;
-                subject.Fingers.Add(finger);
-                subject.Id = "1";
+                // conenction to database
                 biometricClient.SetDatabaseConnectionToOdbc("Dsn=mssql_dsn;UID=sa;PWD=ddm@TT", "subjects");
-                //conenction to database 
+
+
+                //conenction to database through server
                 //var connection = new NClusterBiometricConnection
                 //{
-                //    Host = "/Local",
-                //    AdminPort = 27759
+                //    Host = "127.0.0.1",
+                //    AdminPort = 24932
                 //};
-                //biometricClient.RemoteConnections.Add(connection);
-                NBiometricStatus status;
+                // biometricClient.RemoteConnections.Add(connection);
+                // ;
 
 
-                File.WriteAllBytes("E:\\Fingerprint sample\\General Template", subject.GetTemplateBuffer().ToArray());
-                string templateFile = "E:\\Fingerprint sample\\Sample Template";
-                Array template = File.ReadAllBytes("E:\\Fingerprint sample\\Sample Template");
-                finger.FileName = templateFile;
-                
+                File.WriteAllBytes("E:\\Fingerprint sample\\General Template 2", subject.GetTemplateBuffer().ToArray());
+                string imageFile = "E:\\Fingerprint sample\\Sample 2.jpg";
+              //  Array template = File.ReadAllBytes("E:\\Fingerprint sample\\General Template");
+                finger.FileName = imageFile;
+                subject.Fingers.Add(finger);
+                subject.Id = "1136";
+
+
 
                 //Set finger template size (recommended, for enroll to database, is large)
                 //FacesTemplateSize is not set, so the default empalte size value is used
-                biometricClient.FingersTemplateSize = NTemplateSize.Large;
+               // biometricClient.FingersTemplateSize = NTemplateSize.Large;
                 
-                 status = NBiometricStatus.InternalError;
-                status = biometricClient.CreateTemplate(subject);
+               // var status = NBiometricStatus.InternalError;
+               var  status = biometricClient.CreateTemplate(subject);
                 if (status == NBiometricStatus.Ok)
                 {
                     Console.WriteLine("Template extracted");
@@ -103,7 +99,7 @@ namespace NeurotechFingerprintFromImage
                     
                     //add into database
                     NBiometricTask enrollTask =
-               biometricClient.CreateTask(NBiometricOperations.Enroll, subject);
+                    biometricClient.CreateTask(NBiometricOperations.Enroll, subject);
                     biometricClient.PerformTask(enrollTask);
                     status = enrollTask.Status;
                     if (status != NBiometricStatus.Ok)
@@ -119,14 +115,12 @@ namespace NeurotechFingerprintFromImage
 
                     //BDifStandard.ISO
                     File.WriteAllBytes("E:\\Fingerprint sample\\ISO Template", subject.GetTemplateBuffer(CbeffBiometricOrganizations.IsoIecJtc1SC37Biometrics,
-                                     CbeffBdbFormatIdentifiers.IsoIecJtc1SC37BiometricsFingerMinutiaeRecordFormat,
-                                     FMRecord.VersionIsoCurrent).ToArray());
+                                     CbeffBdbFormatIdentifiers.IsoIecJtc1SC37BiometricsFingerMinutiaeRecordFormat,FMRecord.VersionIsoCurrent).ToArray());
                     //BDifStandard.ANSI
                     File.WriteAllBytes("E:\\Fingerprint sample\\ANSI Template", subject.GetTemplateBuffer(CbeffBiometricOrganizations.IncitsTCM1Biometrics,
-                                        CbeffBdbFormatIdentifiers.IncitsTCM1BiometricsFingerMinutiaeU,
-                                          FMRecord.VersionAnsiCurrent).ToArray());
+                                        CbeffBdbFormatIdentifiers.IncitsTCM1BiometricsFingerMinutiaeU,FMRecord.VersionAnsiCurrent).ToArray());
                     
-                  Console.WriteLine("template saved successfully");
+                    Console.WriteLine("template saved successfully");
 
                    
 
