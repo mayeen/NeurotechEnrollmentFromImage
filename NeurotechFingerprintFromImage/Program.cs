@@ -13,13 +13,11 @@ namespace NeurotechFingerprintFromImage
 {
     class Program
     {
-        private static bool fileAccessible(string filePath)
-        {
-            return File.Exists(filePath);
-
-        }
         static int Main(string[] args)
         {
+            BdifStandard standard = BdifStandard.Unspecified;
+
+
             //Licenses obtain for components
 
             string components ="Biometrics.FaceExtraction,Biometrics.FingerExtraction,Devices.Cameras";
@@ -37,8 +35,7 @@ namespace NeurotechFingerprintFromImage
                 Console.WriteLine(components);
                 
             }
-            
-            
+         
             using (var biometricClient = new NBiometricClient { UseDeviceManager = true })
             using (var deviceManager = biometricClient.DeviceManager)
             using (var subject = new NSubject())
@@ -46,41 +43,28 @@ namespace NeurotechFingerprintFromImage
 
             using (var finger = new NFinger())
             {
-               
-
-               string myFileName = "E:\\Fingerprint sample\\012_3_3.jpg";
-              
-               bool a=  Directory.Exists(myFileName);
-
-               bool b=  fileAccessible(myFileName);
-
                 // conenction to database
-                biometricClient.SetDatabaseConnectionToOdbc("Dsn=mssql_dsn;UID=sa;PWD=ddm@TT", "subjects");
+                // biometricClient.SetDatabaseConnectionToOdbc("Dsn=mssql_dsn;UID=sa;PWD=ddm@TT", "subjects");
 
-
-                //conenction to database through server
-                //var connection = new NClusterBiometricConnection
-                //{
-                //    Host = "127.0.0.1",
-                //    AdminPort = 24932
-                //};
-                // biometricClient.RemoteConnections.Add(connection);
-                // ;
-
-               
+                //conenction to database through NServer
+                var connection = new NClusterBiometricConnection
+                {
+                    Host = "127.0.0.1",
+                    AdminPort = 24932   //admin listen port
+                };
+                biometricClient.RemoteConnections.Add(connection);
+                ;
 
                 //image location to create template 
-                string imageFile = "E:\\Fingerprint sample\\Sample 2.jpg";
-              //  Array template = File.ReadAllBytes("E:\\Fingerprint sample\\General Template");
+                string imageFile = "E:\\Fingerprint sample\\Latest Sample\\Fourth Finger.jpg";
+              
                 finger.FileName = imageFile;
                 subject.Fingers.Add(finger);
-                subject.Id = "1138"; //ID number in the database
-
-
+                subject.Id = "2512"; //ID number in the database
 
                 //Set finger template size (recommended, for enroll to database, is large)
-                
-               biometricClient.FingersTemplateSize = NTemplateSize.Large;
+
+                biometricClient.FingersTemplateSize = NTemplateSize.Large;
                 
                 NBiometricStatus status = NBiometricStatus.InternalError;
 
@@ -88,6 +72,9 @@ namespace NeurotechFingerprintFromImage
                 status = biometricClient.CreateTemplate(subject);
                 if (status == NBiometricStatus.Ok)
                 {
+                    //ISO or ANSI template stadard can be set before extraction
+                    Console.WriteLine("{0} template extracted.", standard == BdifStandard.Iso ?
+                    "ISO" : standard == BdifStandard.Ansi ? "ANSI" : "Proprietary");
                     Console.WriteLine("Template extracted");
                     // save image to file
                     using (var image = subject.Fingers[0].Image)
@@ -97,7 +84,26 @@ namespace NeurotechFingerprintFromImage
                         Console.WriteLine("image saved successfully");
                       
                     }
-    
+
+                    if (standard == BdifStandard.Iso)
+                    {   //create BDifStandard.ISO template
+                        File.WriteAllBytes("E:\\Fingerprint sample\\Latest Sample\\Fourth Template Generated ISO", subject.GetTemplateBuffer(CbeffBiometricOrganizations.IsoIecJtc1SC37Biometrics,
+                            CbeffBdbFormatIdentifiers.IsoIecJtc1SC37BiometricsFingerMinutiaeRecordFormat,
+                            FMRecord.VersionIsoCurrent).ToArray());
+                    }
+                    else if (standard == BdifStandard.Ansi)
+                    {
+                        //create BDifStandard.ANSI template
+                        File.WriteAllBytes("E:\\Fingerprint sample\\Latest Sample\\Fourth Template Generated ANSI", subject.GetTemplateBuffer(CbeffBiometricOrganizations.IncitsTCM1Biometrics,
+                            CbeffBdbFormatIdentifiers.IncitsTCM1BiometricsFingerMinutiaeU,
+                            FMRecord.VersionAnsiCurrent).ToArray());
+                    }
+                    else
+                    {
+                        //create general template  
+                        File.WriteAllBytes("E:\\Fingerprint sample\\Latest Sample\\Fourth Finger Template Generated", subject.GetTemplateBuffer().ToArray());
+                    }
+  
                     //add into database
                     NBiometricTask enrollTask =
                     biometricClient.CreateTask(NBiometricOperations.Enroll, subject);
@@ -110,26 +116,8 @@ namespace NeurotechFingerprintFromImage
                         return -1;
                     }
                     Console.WriteLine(String.Format("Enrollment was successful."));
-                    Console.ReadLine();
-
-                    //create general template  
-                    File.WriteAllBytes("E:\\Fingerprint sample\\General Template 2", subject.GetTemplateBuffer().ToArray());
-
-                    //create BDifStandard.ISO template
-                    File.WriteAllBytes("E:\\Fingerprint sample\\ISO Template", subject.GetTemplateBuffer(CbeffBiometricOrganizations.IsoIecJtc1SC37Biometrics,
-                                     CbeffBdbFormatIdentifiers.IsoIecJtc1SC37BiometricsFingerMinutiaeRecordFormat,FMRecord.VersionIsoCurrent).ToArray());
-                    //create BDifStandard.ANSI template
-                    File.WriteAllBytes("E:\\Fingerprint sample\\ANSI Template", subject.GetTemplateBuffer(CbeffBiometricOrganizations.IncitsTCM1Biometrics,
-                                        CbeffBdbFormatIdentifiers.IncitsTCM1BiometricsFingerMinutiaeU,FMRecord.VersionAnsiCurrent).ToArray());
-                    
+                    Console.ReadLine();     
                     Console.WriteLine("template saved successfully");
-
-                   
-
-                    
-
-
-
                 }
                 else
                 {
